@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Checker</title>
+</head>
+<body>
+    <section name="inputsSection">
+        <h1>Weather Checker</h1>
+        <input type="text" placeholder="Please enter a city" id="cityInput">
+        <input type="submit" value="Get Weather" id="enter">
+    </section> 
+    
+    <section name="displaySection">
+                    <h2 id="weatherHeader"></h2>
+                    <p id="weatherOutput"></p>               
+    </section>
+    
+    <script>
+        var apiKey = "f2bf8295c4498193ef44b79bcf5ec8e4"
+        var enterButton = document.querySelector('#enter')
+        var inputVal = document.querySelector('#cityInput')
+        var weatherVal = document.querySelector('#weatherOutput')
+        var weatherHeaderVal = document.querySelector('#weatherHeader')
+
+        enterButton.addEventListener('click', function(){
+            fetch('https://api.openweathermap.org/data/2.5/weather?q=' + inputVal.value + '&appid=' + apiKey)
+            .then(response => response.json())
+            .then(data => {
+                var nameVal = data['name']
+                var weather = data['weather']['0']['main']
+                var desc = data['weather']['0']['description']
+                var tempurature = data['main']['temp']
+                
+                weatherHeaderVal.innerHTML= weather
+                weatherVal.innerHTML="Currently the weather in " + nameVal +" is " + desc + ", and the tempurature is " + convertKtoF(tempurature) + " degrees Fahrenheit."      
+            })
+        })
+        
+        function convertKtoF(val){
+            return (((val-273.15)*1.8)+32).toFixed(0)
+        }
+    </script>
+</body>
+</html>
